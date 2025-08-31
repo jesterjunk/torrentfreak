@@ -1,199 +1,55 @@
-/* ===============  TorrentFreak List Stylesheet  =============== */
-/* Designed for the exact HTML structure provided (h3/h4/hr/p/br/code/a) */
-/* Minimal global footprint; customize via CSS variables below. */
-
-/* Theme tokens */
-:root {
-  --bg: #ffffff;
-  --text: #111827;        /* slate-900 */
-  --muted: #6b7280;       /* gray-500 */
-  --card: #f8fafc;        /* slate-50 */
-  --line: #e5e7eb;        /* gray-200 */
-  --accent: #2563eb;      /* blue-600 */
-  --accent-underline: rgba(37, 99, 235, 0.25);
-  --code-bg: #eef2ff;     /* indigo-50 */
-  --code-border: #c7d2fe; /* indigo-200 */
+/* Minimal stylesheet for the provided markup */
+:root{
+  --bg:#ffffff; --fg:#111827; --muted:#6b7280;
+  --accent:#2563eb; --border:#e5e7eb; --code-bg:#f6f8fa;
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0b1020;
-    --text: #e5e7eb;
-    --muted: #9ca3af;
-    --card: #121730;
-    --line: #2a3050;
-    --accent: #60a5fa;
-    --accent-underline: rgba(96, 165, 250, 0.35);
-    --code-bg: #0f1530;
-    --code-border: #2b3b7a;
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0b0f14; --fg:#e5e7eb; --muted:#9ca3af;
+    --accent:#60a5fa; --border:#1f2937; --code-bg:#0f172a;
   }
 }
 
-/* Page frame (keeps it neat if this is the only content on a page) */
-html, body {
-  background: var(--bg);
-  color: var(--text);
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0 auto;
+  max-width:1024px;
+  padding:24px 16px;
+  font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial,"Apple Color Emoji","Segoe UI Emoji";
+  color:var(--fg); background:var(--bg);
 }
 
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font: 16px/1.65 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-  margin: 0;
-  padding: clamp(16px, 3vw, 32px);
+/* Headings & section rhythm */
+h3{margin:.25rem 0 1rem;font-weight:700;letter-spacing:.2px;
+    font-size:clamp(1.25rem,2.2vw+1rem,2rem)}
+h4{margin:2rem 0 .25rem;font-size:1.05rem}
+[id]{scroll-margin-top:72px}
+hr{height:1px;border:0;background:var(--border);margin:.4rem 0 1rem}
+
+/* Paragraphs hold the rows (timestamp + link) separated by <br> */
+p{margin:.25rem 0;}
+
+/* Timestamp blocks */
+p>code{
+  display:inline-block; min-width:16ch; /* aligns columns */
+  padding:2px 8px; border-radius:6px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+  background:var(--code-bg); border:1px solid var(--border);
+  color:inherit; text-align:center; vertical-align:baseline; margin-right:.5rem;
 }
 
-/* Constrain width for readability without requiring a wrapper div */
-body > * {
-  max-width: min(900px, 92vw);
-  margin-left: auto;
-  margin-right: auto;
+/* Links */
+a{
+  color:var(--accent); text-underline-offset:3px;
+  text-decoration-thickness:from-font;
+  text-decoration-color:color-mix(in srgb, var(--accent) 45%, transparent);
+  word-break:break-word; overflow-wrap:anywhere;
 }
+a:hover,a:focus-visible{ text-decoration-color:currentColor; }
 
-/* Headings */
-h3 {
-  font-weight: 800;
-  letter-spacing: 0.2px;
-  line-height: 1.15;
-  margin: 0 0 1rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--line);
-  word-break: break-word; /* handles the long ID hash */
-}
+/* Subtle spacing between lines separated by <br> */
+p br{ line-height:1.1 } /* keeps rows snug without collapsing */
 
-h4 {
-  margin: 2.25rem 0 0.25rem;
-  font-size: 1.05rem;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  color: var(--text);
-  scroll-margin-top: 72px; /* nicer anchor jump positioning */
-  position: sticky;        /* keep week label visible while scrolling */
-  top: 0;
-  z-index: 5;
-  background: linear-gradient(to bottom, var(--bg) 75%, color-mix(in oklab, var(--bg), transparent 100%));
-  padding: 0.5rem 0;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-}
-h4::before {
-  content: "📅 ";
-  opacity: 0.9;
-}
-
-/* Section divider */
-hr {
-  height: 1px;
-  border: 0;
-  margin: 0.25rem 0 0.75rem;
-  background: linear-gradient(to right, transparent, var(--line), transparent);
-}
-
-/* Paragraphs that contain the timestamp + link rows */
-p {
-  margin: 0.35rem 0;
-}
-
-/* Make line spacing comfortable when <br> is used to stack rows */
-p br {
-  line-height: 1.1;
-  content: "";
-}
-
-/* Timestamp chips (left column) */
-code {
-  display: inline-block;
-  min-width: 13ch;           /* aligns columns across wrapped lines */
-  padding: 0.15rem 0.45rem;
-  margin-right: 0.65rem;
-  vertical-align: baseline;
-  text-align: right;
-  border-radius: 6px;
-  background: var(--code-bg);
-  border: 1px solid var(--code-border);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: 0.92em;
-  color: var(--muted);
-  white-space: nowrap;
-}
-
-/* Links (right column) */
-a:any-link {
-  color: var(--accent);
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1.5px;
-  text-decoration-color: var(--accent-underline);
-  word-break: break-word;    /* allow long URLs to wrap */
-  overflow-wrap: anywhere;   /* robust wrapping for very long segments */
-}
-a:hover {
-  text-decoration-thickness: 2px;
-}
-a:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-
-/* External-link glyph (only for absolute http(s) links) */
-a[href^="http"]::after {
-  content: "↗";
-  font-size: 0.9em;
-  margin-left: 0.25rem;
-  opacity: 0.7;
-}
-
-/* Highlight heading when navigated via hash */
-:target {
-  animation: tf-target-fade 2.2s ease-out 1;
-  outline: 0; /* rely on animation */
-}
-@keyframes tf-target-fade {
-  0%   { box-shadow: 0 0 0 0 rgba(99,102,241,0.35); background: color-mix(in oklab, var(--card), transparent 0%); }
-  25%  { box-shadow: 0 0 0 6px rgba(99,102,241,0.25); background: color-mix(in oklab, var(--card), transparent 0%); }
-  100% { box-shadow: 0 0 0 0 rgba(99,102,241,0); background: transparent; }
-}
-
-/* Subtle cards around each week block: h4 + hr + p-group */
-h4 + hr + p {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 0.75rem 0.85rem;
-  box-shadow: 0 1px 0 rgba(0,0,0,0.03);
-}
-
-/* Slightly tighter spacing inside cards */
-h4 + hr + p br {
-  line-height: 0.95;
-}
-
-/* Selection color */
-::selection {
-  background: color-mix(in oklab, var(--accent), #ffffff 75%);
-}
-
-/* Print styles: crisp, ink-friendly, no sticky headers */
-@media print {
-  :root {
-    --bg: #fff; --text: #000; --muted: #333; --line: #999; --card: #fff;
-  }
-  body {
-    padding: 0.5in;
-    font-size: 12pt;
-    line-height: 1.4;
-  }
-  h4 {
-    position: static;
-    background: none;
-  }
-  a:any-link {
-    color: #000;
-    text-decoration: underline;
-  }
-  a[href^="http"]::after {
-    content: " (" attr(href) ")";
-    font-size: 0.9em;
-    opacity: 1;
-  }
-}
+/* Small niceties */
+::selection{ background:color-mix(in srgb, var(--accent) 30%, transparent) }
